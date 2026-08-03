@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "327440028579",
+    "project_id": "islamic-app-1ae1c",
+    "storage_bucket": "islamic-app-1ae1c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327440028579:android:1925582ca48f6b2fd58016",
+        "android_client_info": {
+          "package_name": "com.example.task2_namaztime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327440028579-70un339jt8qumn311p42pr7lieuvtrh5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjMLTaqRfLueysgur_Gfl6e9BEysMsn9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327440028579-70un339jt8qumn311p42pr7lieuvtrh5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
