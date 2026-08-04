@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task2_namaztime/Controller/Controller.dart';
+import 'package:task2_namaztime/Sqflite/DBView.dart';
 import 'package:task2_namaztime/Views/Prayers.dart';
 import 'package:task2_namaztime/Views/SignIn.dart';
 import 'package:task2_namaztime/Views/VerseOfDayScreen.dart';
@@ -20,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     MainDashboardView(),
     PrayersScreen(),
     VerseOfTheDayScreen(),
-    const Center(child: Text("Qibla View")),
+    DatabaseViewerScreen(),
     const Center(child: Text("Profile View")),
   ];
 
@@ -270,7 +271,7 @@ class NextPrayerCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              // Mark As Prayed Button
+
               SizedBox(
                 width: double.infinity,
                 height: 44,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AuthWidgets {
   // Private Helper Style
@@ -18,13 +19,23 @@ class AuthWidgets {
     bool obscureText = false,
     VoidCallback? onToggleObscure,
     TextInputType keyboardType = TextInputType.text,
-    String? Function(String?)? validator, // 👈 Validator param add karein
+    String? Function(String?)? validator,
+    bool isPhoneNumber = false,
   }) {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
-      validator: validator, // 👈 Pass to TextFormField
+      validator: validator,
+      maxLength: isPhoneNumber ? 11 : null,
+
+      inputFormatters: isPhoneNumber
+          ? [
+              LengthLimitingTextInputFormatter(11),
+              FilteringTextInputFormatter.digitsOnly,
+            ]
+          : null,
+
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(fontSize: 13, color: Colors.grey),
@@ -104,7 +115,7 @@ class AuthWidgets {
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             "or continue with",
-            style: TextStyle(fontSize: 11, color: Colors.grey),
+            style: TextStyle(fontSize: 15, color: Colors.grey),
           ),
         ),
         Expanded(child: Divider(color: Color(0xFFE2E8F0))),
@@ -172,6 +183,42 @@ class AuthWidgets {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  static Widget buildGoogleSignInButton({required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity, // Spans the full width of its parent container
+        height: 52, // Standard professional button height
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFFE2E8F0), width: 1.5),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image(
+              image: NetworkImage('https://google.com'),
+              width: 22,
+              height: 22,
+            ),
+            SizedBox(width: 12),
+
+            Text(
+              "Continue with Google",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1E293B),
+                letterSpacing: 0.2,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

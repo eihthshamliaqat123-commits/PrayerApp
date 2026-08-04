@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task2_namaztime/Sqflite/Database.dart';
 
 class Timings {
   final String? fajr;
@@ -54,11 +52,10 @@ class Data {
 class PrayerApi extends GetxController {
   PrayerTimingsModel? prayerData;
   bool isLoading = false;
-
   var timeString = "".obs;
   late Timer _timer;
 
-  // Map to store statuses per date key: {"YYYY-MM-DD_PrayerName": true/false}
+  // Optimized lookup tracking layer matching state changes across components
   Map<String, bool> prayerRecords = {};
 
   @override
@@ -75,6 +72,10 @@ class PrayerApi extends GetxController {
     super.onClose();
   }
 
+  Future<void> refreshDatabaseLogs() async {
+    await loadPrayerRecords();
+  }
+
   void _startClock() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       timeString.value = DateFormat('hh:mm:ss a').format(DateTime.now());
@@ -82,14 +83,21 @@ class PrayerApi extends GetxController {
   }
 
   Future<void> loadPrayerRecords() async {
-    final prefs = await SharedPreferences.getInstance();
-    final keys = prefs.getKeys();
-    for (String key in keys) {
-      if (key.contains('_')) {
-        prayerRecords[key] = prefs.getBool(key) ?? false;
+    try {
+      final logs = await DatabaseHelper.instance.fetchAllLogs();
+      prayerRecords.clear();
+
+      for (var row in logs) {
+        final String date = row['date'];
+        final String prayerName = row['prayer_name'];
+        final bool isPrayed = row['is_prayed'] == 1;
+
+        prayerRecords["${date}_$prayerName"] = isPrayed;
       }
+      update();
+    } catch (e) {
+      print("Error loading sqflite details: $e");
     }
-    update();
   }
 
   Future<void> getPrayer(
@@ -99,12 +107,10 @@ class PrayerApi extends GetxController {
   }) async {
     isLoading = true;
     update();
-
     final formattedDate = DateFormat('dd-MM-yyyy').format(date);
     final url = Uri.parse(
       "https://api.aladhan.com/v1/timings/$formattedDate?latitude=$latitude&longitude=$longitude",
     );
-
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -121,7 +127,6 @@ class PrayerApi extends GetxController {
     }
   }
 
-  // Key generator: e.g. "2026-07-21_Fajr"
   String _getStorageKey(DateTime date, String prayerName) {
     final formattedDate = DateFormat('yyyy-MM-dd').format(date);
     return "${formattedDate}_$prayerName";
@@ -132,15 +137,24 @@ class PrayerApi extends GetxController {
     return prayerRecords[key] ?? false;
   }
 
+  // FIXED: Mutates storage layout directly via clean SQLite execution queries
   Future<void> togglePrayerStatus(DateTime date, String prayerName) async {
-    final prefs = await SharedPreferences.getInstance();
+    final String dateString = DateFormat('yyyy-MM-dd').format(date);
     final key = _getStorageKey(date, prayerName);
 
     bool current = prayerRecords[key] ?? false;
     bool updated = !current;
 
+    // Mutate state memory model
     prayerRecords[key] = updated;
-    await prefs.setBool(key, updated);
+
+    // Commit changes to persistent SQLite storage
+    await DatabaseHelper.instance.saveOrUpdatePrayer(
+      dateString,
+      prayerName,
+      updated,
+    );
+
     update();
   }
 
@@ -163,7 +177,6 @@ class PrayerApi extends GetxController {
 
   Map<String, dynamic> getPrayerStatus(Timings timings) {
     final now = DateTime.now();
-
     final fajr = parsePrayerTime(timings.fajr ?? '05:00');
     final dhuhr = parsePrayerTime(timings.dhuhr ?? '12:00');
     final asr = parsePrayerTime(timings.asr ?? '15:30');

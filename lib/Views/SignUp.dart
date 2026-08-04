@@ -1,10 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task2_namaztime/Controller/FireBaseAuthController.dart';
 import 'package:task2_namaztime/Views/SignIn.dart';
 import 'package:task2_namaztime/Widget/FormValidator.dart';
 import 'package:task2_namaztime/Widget/TextWidget.dart';
-// import 'package:task2_namaztime/Utils/FormValidators.dart'; // 👈 Class import karein
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -30,7 +31,6 @@ class SignUpScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: [
-              // Top Bar
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -43,30 +43,68 @@ class SignUpScreen extends StatelessWidget {
               ),
               const SizedBox(height: 15),
 
-              // Header Artwork & Titles
-              const Icon(
-                Icons.nightlight_round,
-                color: Color(0xFFB8A2F8),
-                size: 36,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "Create Your Account",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1E1B4B),
+              SizedBox(
+                height: 300,
+                width: double.infinity,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset(
+                          'Assets/mas.jpeg',
+                          fit: BoxFit.cover,
+                          opacity: const AlwaysStoppedAnimation(0.5),
+                        ),
+                      ),
+                    ),
+
+                    // Positioned.fill(
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(16),
+                    //     child: BackdropFilter(
+                    //       filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                    //       child: Container(
+                    //         color: Colors.black.withOpacity(0.01),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // const Icon(
+                          //   Icons.nightlight_round,
+                          //   color: Color(0xFFB8A2F8),
+                          //   size: 36,
+                          // ),
+                          const SizedBox(height: 160),
+                          const Text(
+                            "Create Your Account!",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1E1B4B),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          const Text(
+                            "Join us and strengthen your connection \n with your faith.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Color.fromARGB(255, 128, 125, 125),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 6),
-              const Text(
-                "Join us and strengthen your connection\nwith your faith.",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13, color: Colors.grey),
               ),
               const SizedBox(height: 20),
 
-              // White Card Form Box
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
@@ -81,8 +119,7 @@ class SignUpScreen extends StatelessWidget {
                   ],
                 ),
                 child: Form(
-                  // 👈 2. Form Widget se wrap karein
-                  key: _formKey, // 👈 Form Key assign karein
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -115,6 +152,7 @@ class SignUpScreen extends StatelessWidget {
                         prefixIcon: Icons.phone_outlined,
                         keyboardType: TextInputType.phone,
                         validator: FormValidators.validatePakistaniPhone,
+                        isPhoneNumber: true,
                       ),
                       const SizedBox(height: 14),
 
@@ -161,7 +199,6 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
 
-                      // Terms & Conditions Checkbox
                       Row(
                         children: [
                           Obx(
@@ -207,7 +244,6 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 14),
 
-                      // Create Account Button
                       SizedBox(
                         width: double.infinity,
                         height: 50,
@@ -223,7 +259,6 @@ class SignUpScreen extends StatelessWidget {
                             onPressed: auth.isLoading.value
                                 ? null
                                 : () {
-                                    // 👈 3. Validate Form before submitting
                                     if (_formKey.currentState!.validate()) {
                                       if (!auth.agreeTerms.value) {
                                         Get.snackbar(
@@ -275,47 +310,17 @@ class SignUpScreen extends StatelessWidget {
                       ),
 
                       const SizedBox(height: 20),
-                      AuthWidgets.buildDivider(),
-                      const SizedBox(height: 16),
 
-                      // Social Buttons
-                      Row(
-                        children: [
-                          Expanded(
-                            child: AuthWidgets.socialButton(
-                              "Google",
-                              Icons.g_mobiledata,
-                              Colors.red,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: AuthWidgets.socialButton(
-                              "Apple",
-                              Icons.apple,
-                              Colors.black,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: AuthWidgets.socialButton(
-                              "Facebook",
-                              Icons.facebook,
-                              Colors.blue,
-                            ),
-                          ),
-                        ],
-                      ),
+                      //AuthWidgets.buildDivider(),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
               ),
 
               const SizedBox(height: 16),
-              AuthWidgets.privacyMattersCard(),
-              const SizedBox(height: 16),
-
-              // Footer Redirect
+              // AuthWidgets.privacyMattersCard(),
+              // const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

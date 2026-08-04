@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "327440028579-h7qi1edis6su1p09lslj4pav830mmq32.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.task2_namaztime",
+            "certificate_hash": "59ab256d9d056e6e635bed389ef67f69aacb889e"
+          }
+        },
+        {
           "client_id": "327440028579-70un339jt8qumn311p42pr7lieuvtrh5.apps.googleusercontent.com",
           "client_type": 3
         }

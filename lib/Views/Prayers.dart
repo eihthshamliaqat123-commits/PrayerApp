@@ -190,12 +190,12 @@ class _PrayersScreenState extends State<PrayersScreen> {
                       },
                     ];
 
-                    return SingleChildScrollView(
+                    return Container(
                       padding: const EdgeInsets.only(
-                        top: 30.0,
+                        //top: 30.0,
                         left: 16.0,
                         right: 16.0,
-                        bottom: 16.0,
+                        //bottom: 1.0,
                       ),
                       child: Column(
                         children: [
@@ -268,7 +268,7 @@ class _PrayersScreenState extends State<PrayersScreen> {
                               );
                             },
                           ),
-                          const SizedBox(height: 50),
+                          const SizedBox(height: 10),
                           Center(
                             child: Container(
                               child: Text(
@@ -284,28 +284,6 @@ class _PrayersScreenState extends State<PrayersScreen> {
                               ),
                             ),
                           ),
-                          // Container(
-                          //   width: double.infinity,
-                          //   height: 160,
-                          //   decoration: BoxDecoration(
-                          //     color: Colors.white,
-                          //     borderRadius: BorderRadius.circular(20),
-                          //     boxShadow: [
-                          //       BoxShadow(
-                          //         color: Colors.black.withOpacity(0.04),
-                          //         blurRadius: 12,
-                          //         spreadRadius: 2,
-                          //       ),
-                          //     ],
-                          //   ),
-                          //   child: ClipRRect(
-                          //     borderRadius: BorderRadius.circular(20),
-                          //     child: Image.asset(
-                          //       "Assets/mosque.jpg",
-                          //       fit: BoxFit.cover,
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     );
