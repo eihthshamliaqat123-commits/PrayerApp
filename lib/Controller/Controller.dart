@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:task2_namaztime/Sqflite/Database.dart';
 
 class Timings {
@@ -54,9 +56,17 @@ class PrayerApi extends GetxController {
   bool isLoading = false;
   var timeString = "".obs;
   late Timer _timer;
+  // --- NEW CALENDAR STATE VARIABLES ---
+  var focusedDay = DateTime.now().obs;
+  var rangeStart = Rxn<DateTime>();
+  var rangeEnd = Rxn<DateTime>();
+  var calendarFormat = CalendarFormat.week.obs;
 
-  // Optimized lookup tracking layer matching state changes across components
+  var prayerHistoryDatabase = <String, List<String>>{}.obs;
+
   Map<String, bool> prayerRecords = {};
+
+  var completedPrayers = <String>[].obs;
 
   @override
   void onInit() {
@@ -64,6 +74,7 @@ class PrayerApi extends GetxController {
     loadPrayerRecords();
     getPrayer(DateTime.now());
     _startClock();
+    selectEntireWeekOfDate(DateTime.now());
   }
 
   @override
@@ -137,26 +148,41 @@ class PrayerApi extends GetxController {
     return prayerRecords[key] ?? false;
   }
 
-  // FIXED: Mutates storage layout directly via clean SQLite execution queries
   Future<void> togglePrayerStatus(DateTime date, String prayerName) async {
+    if (completedPrayers.contains(prayerName)) {
+      completedPrayers.remove(prayerName);
+    } else {
+      completedPrayers.add(prayerName);
+    }
     final String dateString = DateFormat('yyyy-MM-dd').format(date);
     final key = _getStorageKey(date, prayerName);
 
     bool current = prayerRecords[key] ?? false;
     bool updated = !current;
 
-    // Mutate state memory model
     prayerRecords[key] = updated;
 
-    // Commit changes to persistent SQLite storage
     await DatabaseHelper.instance.saveOrUpdatePrayer(
       dateString,
       prayerName,
       updated,
     );
+    String dateKey =
+        "${focusedDay.value.year}-${focusedDay.value.month}-${focusedDay.value.day}";
+    prayerHistoryDatabase[dateKey] = List<String>.from(completedPrayers);
 
     update();
   }
+
+  double get prayerProgressValue {
+    if (completedPrayers.isEmpty) return 0.0;
+    return completedPrayers.length / 5.0;
+  }
+
+  // double get prayerProgressValue {
+  //   if (completedPrayers.isEmpty) return 0.0;
+  //   return completedPrayers.length / 5.0;
+  // }
 
   DateTime parsePrayerTime(String timeStr) {
     try {
@@ -226,5 +252,50 @@ class PrayerApi extends GetxController {
       'next': nextPrayer,
       'remainingText': timeLeftString,
     };
+  }
+
+  void selectEntireWeekOfDate(DateTime date) {
+    // REQUIREMENT 1: Block future selections
+    // Clear the time part of today's date for an accurate comparison
+    DateTime today = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+    DateTime clickedDateOnly = DateTime(date.year, date.month, date.day);
+
+    if (clickedDateOnly.isAfter(today)) {
+      Get.snackbar(
+        "Selection Blocked",
+        "You cannot select a future date for prayer tracking.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.black87,
+        colorText: Colors.white,
+      );
+      return; // Stop execution immediately
+    }
+
+    // REQUIREMENT 2: Set the clicked day as the start, and select 1 week forward
+    rangeStart.value = clickedDateOnly;
+    rangeEnd.value = clickedDateOnly.add(
+      const Duration(days: 6),
+    ); // 1 week window forward
+    focusedDay.value = clickedDateOnly;
+
+    // Load records for this date
+    _fetchDataForDate(clickedDateOnly);
+  }
+
+  void _fetchDataForDate(DateTime date) {
+    String dateKey = "${date.year}-${date.month}-${date.day}";
+
+    // Load recorded prayers if they exist, otherwise supply a clean list
+    if (prayerHistoryDatabase.containsKey(dateKey)) {
+      completedPrayers.value = List<String>.from(
+        prayerHistoryDatabase[dateKey]!,
+      );
+    } else {
+      completedPrayers.clear();
+    }
   }
 }

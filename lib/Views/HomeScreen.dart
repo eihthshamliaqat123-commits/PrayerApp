@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task2_namaztime/Controller/Controller.dart';
 import 'package:task2_namaztime/Sqflite/DBView.dart';
+import 'package:task2_namaztime/Views/NewPrayers.dart';
 import 'package:task2_namaztime/Views/Prayers.dart';
-import 'package:task2_namaztime/Views/SignIn.dart';
+import 'package:task2_namaztime/Views/ProfileScreen.dart';
 import 'package:task2_namaztime/Views/VerseOfDayScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,8 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
     MainDashboardView(),
     PrayersScreen(),
     VerseOfTheDayScreen(),
+    //PrayersScreenNew(),
     DatabaseViewerScreen(),
-    const Center(child: Text("Profile View")),
+    ProfileScreen(),
   ];
 
   @override
@@ -90,14 +92,14 @@ class MainDashboardView extends StatelessWidget {
           ],
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout_outlined, color: Colors.purple),
-            onPressed: () {
-              Get.offAll(() => SignInScreen());
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.logout_outlined, color: Colors.purple),
+        //     onPressed: () {
+        //       Get.offAll(() => SignInScreen());
+        //     },
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

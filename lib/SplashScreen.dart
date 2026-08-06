@@ -17,10 +17,10 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Timer(const Duration(seconds: 3), () {
-      Get.to(SignInScreen());
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(builder: (context) =>  SignInScreen()),
-      //);
+      //Get.to(SignInScreen());
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => SignInScreen()),
+      );
     });
   }
 
