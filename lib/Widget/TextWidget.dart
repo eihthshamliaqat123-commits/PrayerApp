@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AuthWidgets {
-  // Private Helper Style
+
   static BoxDecoration inputBoxDecoration() {
     return BoxDecoration(
       color: const Color(0xFFFAFAFE),

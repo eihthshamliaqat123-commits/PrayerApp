@@ -5,7 +5,6 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:task2_namaztime/Controller/FireBaseAuthController.dart';
 import 'package:task2_namaztime/SplashScreen.dart';
-import 'package:task2_namaztime/Views/SignIn.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

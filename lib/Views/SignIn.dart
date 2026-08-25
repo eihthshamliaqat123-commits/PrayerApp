@@ -34,16 +34,17 @@ class _SignInScreenState extends State<SignInScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AuthWidgets.circularIconButton(
-                    Icons.arrow_back_ios_new,
-                    () => Get.back(),
-                  ),
-                  AuthWidgets.languageDropdown(),
-                ],
-              ),
+              SizedBox(height: 40),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     AuthWidgets.circularIconButton(
+              //       Icons.arrow_back_ios_new,
+              //       () => Get.back(),
+              //     ),
+              //     AuthWidgets.languageDropdown(),
+              //   ],
+              // ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

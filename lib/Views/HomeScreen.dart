@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task2_namaztime/Controller/Controller.dart';
-import 'package:task2_namaztime/Sqflite/DBView.dart';
-import 'package:task2_namaztime/Views/NewPrayers.dart';
 import 'package:task2_namaztime/Views/Prayers.dart';
 import 'package:task2_namaztime/Views/ProfileScreen.dart';
+import 'package:task2_namaztime/Views/QiblaScreen.dart';
 import 'package:task2_namaztime/Views/VerseOfDayScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,7 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
     PrayersScreen(),
     VerseOfTheDayScreen(),
     //PrayersScreenNew(),
-    DatabaseViewerScreen(),
+    //DatabaseViewerScreen(),
+    QiblaScreen(),
     ProfileScreen(),
   ];
 
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Prayers',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Quran'),
-          BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Qibla'),
+          BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Compass'),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             label: 'Profile',

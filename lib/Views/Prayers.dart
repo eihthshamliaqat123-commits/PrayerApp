@@ -16,13 +16,14 @@ class _PrayersScreenState extends State<PrayersScreen> {
 
   @override
   void initState() {
+    super.initState(); // Important: Always call super.initState() first!
     formattedDate = DateFormat('EEEE, MMM d, yyyy').format(DateTime.now());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true, //alow fill
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -58,6 +59,7 @@ class _PrayersScreenState extends State<PrayersScreen> {
       ),
       body: Column(
         children: [
+          // Top Section with Background Image & Live Clock
           Expanded(
             flex: 2,
             child: Stack(
@@ -68,7 +70,9 @@ class _PrayersScreenState extends State<PrayersScreen> {
                 Positioned.fill(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.02),
+                      color: Colors.black.withOpacity(
+                        0.2,
+                      ), // Slight dark overlay for text readability
                     ),
                   ),
                 ),
@@ -78,7 +82,7 @@ class _PrayersScreenState extends State<PrayersScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 40),
-
+                        // Live Time Widget using GetX Obx
                         Obx(
                           () => Text(
                             controllerData.timeString.value.isEmpty
@@ -100,7 +104,6 @@ class _PrayersScreenState extends State<PrayersScreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 5),
                         Text(
                           formattedDate,
@@ -118,10 +121,11 @@ class _PrayersScreenState extends State<PrayersScreen> {
             ),
           ),
 
+          // Bottom Content Section with Rounded Card
           Expanded(
             flex: 4,
             child: Transform.translate(
-              offset: const Offset(0, -30),
+              offset: const Offset(0, -30), // Smooth overlap effect
               child: Container(
                 decoration: const BoxDecoration(
                   color: Color(0xFFF8F9FA),
@@ -190,21 +194,19 @@ class _PrayersScreenState extends State<PrayersScreen> {
                       },
                     ];
 
-                    return Container(
-                      padding: const EdgeInsets.only(
-                        //top: 30.0,
-                        left: 16.0,
-                        right: 16.0,
-                        //bottom: 1.0,
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 20.0,
                       ),
                       child: Column(
                         children: [
                           GridView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: prayerList.length,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 14,
                                   mainAxisSpacing: 14,
@@ -219,7 +221,7 @@ class _PrayersScreenState extends State<PrayersScreen> {
                                   borderRadius: BorderRadius.circular(18),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.02),
+                                      color: Colors.black.withOpacity(0.04),
                                       blurRadius: 10,
                                       spreadRadius: 1,
                                     ),
@@ -268,20 +270,11 @@ class _PrayersScreenState extends State<PrayersScreen> {
                               );
                             },
                           ),
-                          const SizedBox(height: 10),
-                          Center(
-                            child: Container(
-                              child: Text(
-                                '----------o----------',
-                                style: TextStyle(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    64,
-                                    181,
-                                    227,
-                                  ),
-                                ),
-                              ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            '----------o----------',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 64, 181, 227),
                             ),
                           ),
                         ],

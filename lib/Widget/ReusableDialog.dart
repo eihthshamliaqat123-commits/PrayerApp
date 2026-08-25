@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AuthWidgets {
-  // ... your existing code ...
+
 
   static void showWarningDialog(String message) {
     Get.dialog(

@@ -566,32 +566,32 @@ class _PrayersScreenNewState extends State<PrayersScreenNew> {
     );
   }
 
-  Widget _buildBottomNavBar() {
-    return BottomNavigationBar(
-      currentIndex: 1,
-      selectedItemColor: Colors.indigo,
-      unselectedItemColor: Colors.grey,
-      showUnselectedLabels: true,
-      type: BottomNavigationBarType.fixed,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.access_time_filled),
-          label: "Prayers",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.menu_book_outlined),
-          label: "Quran",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.explore_outlined),
-          label: "Qibla",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          label: "Profile",
-        ),
-      ],
-    );
-  }
+  // Widget _buildBottomNavBar() {
+  //   return BottomNavigationBar(
+  //     currentIndex: 1,
+  //     selectedItemColor: Colors.indigo,
+  //     unselectedItemColor: Colors.grey,
+  //     showUnselectedLabels: true,
+  //     type: BottomNavigationBarType.fixed,
+  //     items: const [
+  //       BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
+  //       BottomNavigationBarItem(
+  //         icon: Icon(Icons.access_time_filled),
+  //         label: "Prayers",
+  //       ),
+  //       BottomNavigationBarItem(
+  //         icon: Icon(Icons.menu_book_outlined),
+  //         label: "Quran",
+  //       ),
+  //       BottomNavigationBarItem(
+  //         icon: Icon(Icons.explore_outlined),
+  //         label: "Qibla",
+  //       ),
+  //       BottomNavigationBarItem(
+  //         icon: Icon(Icons.person_outline),
+  //         label: "Profile",
+  //       ),
+  //     ],
+  //   );
+  // }
 }
